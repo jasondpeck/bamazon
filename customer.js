@@ -8,11 +8,20 @@ var connection = mysql.createConnection({
   database: 'bamazon'
 });
 
-var select = function(){
+function listings(items){
+    for (var i = 0; i < items.length; i++) {
+        console.log('------------------------');
+        console.log('ItemID: ' + items[i].itemID);
+        console.log('Item: ' + items[i].productName);
+        console.log('Department: ' + items[i].departmentName);
+        console.log('Price: $' + items[i].price);
+    }
+    console.log('------------------------');
+}
 
+var select = function(){
     connection.query("SELECT * FROM products", function(err, result) {
         return (listings(result));
-      
       });
 
     setTimeout(function() {
@@ -49,17 +58,6 @@ var update = function(id, quantity){
     connection.query('update products set stockQuantity = ' + quantity + ' where itemID = ' + id, function(err, result) {
         if (err) throw err;
     });
-}
-
-function listings(items){
-    for (var i = 0; i < items.length; i++) {
-        console.log('------------------------');
-        console.log('ItemID: ' + items[i].itemID);
-        console.log('Item: ' + items[i].productName);
-        console.log('Department: ' + items[i].departmentName);
-        console.log('Price: $' + items[i].price);
-    }
-    console.log('------------------------');
 }
 
 connection.connect(function(err) {
