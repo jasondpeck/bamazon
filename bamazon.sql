@@ -18,7 +18,7 @@ INSERT INTO products (productName, departmentName, price, stockQuantity)
 VALUES ('Remy Martin Louis XIII', 'Baller Drinks', 5000, 5);
 
 INSERT INTO products (productName, departmentName, price, stockQuantity)
-VALUES ('Yamazaki 50 Year Release', 'Baller Drinks', 100000, 2);
+VALUES ('Yamazaki 50 Year Release', 'Baller Drinks', 100000, 1);
 
 INSERT INTO products (productName, departmentName, price, stockQuantity)
 VALUES ('Red Baron Pepperoni', 'Frozen Food', 1, 1000);

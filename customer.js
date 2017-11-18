@@ -4,7 +4,7 @@ var prompt = require("prompt");
 var connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'jhsP4263',
+  password: '',
   database: 'bamazon'
 });
 
@@ -17,14 +17,14 @@ var select = function(){
 
     setTimeout(function() {
         prompt.get(['itemID', 'Quantity'], function (err, result) {
-            var shopperItem = result.itemID;
-            var shopperQuantity = result.Quantity;
+            var product = result.itemID;
+            var qty = result.Quantity;
 
-            inventory(shopperItem, shopperQuantity);
+            inventory(product, qty);
             setTimeout(function() {select();}, 1000);
 
         });
-    }, 750);
+    }, 1000);
 }
 
 var inventory = function (id, quantity){
@@ -33,27 +33,23 @@ var inventory = function (id, quantity){
 
         var total = result[0].price * quantity;
 
-        var inventory = result[0].stockQuantity - quantity;
+        var inventoryLeft = result[0].stockQuantity - quantity;
 
-        if (inventory < 0){
+        if (inventoryLeft < 0){
             console.log('Insufficient quantity. We only have ' + result[0].stockQuantity + ' left.');
         } else {
             console.log('You purchased ' + quantity + ' ' + result[0].productName + ' for $' + total);
-            console.log('We have ' + inventory + ' ' + result[0].productName + ' left.')
-            update(id, inventory)
+            console.log('We have ' + inventoryLeft + ' ' + result[0].productName + ' left.')
+            update(id, inventoryLeft)
         }
     });
 }
-
-// If you're not updating the database after a sale you're inventory will be off. Then you'll have to spend all holiday weekend manually checking the inventory as your fellow coworkers goof off leaving you with all the work. 
 
 var update = function(id, quantity){
     connection.query('update products set stockQuantity = ' + quantity + ' where itemID = ' + id, function(err, result) {
         if (err) throw err;
     });
 }
-
-// Making that Bamazon Inventory look top notch! 
 
 function listings(items){
     for (var i = 0; i < items.length; i++) {
@@ -66,8 +62,6 @@ function listings(items){
     console.log('------------------------');
 }
 
-
-// Connecting to the Bamazon Database
 connection.connect(function(err) {
     if (err) {
         console.error('error connecting: ' + err);
@@ -75,5 +69,4 @@ connection.connect(function(err) {
     }
 });
 
-// INITIATE THE SPLINTER SEQUENCE
 select();
